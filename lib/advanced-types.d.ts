@@ -1,2 +1,6 @@
-// TODO: Replace with proper types or remove file
-import {} from 'node:path';
+export interface PluginDefinition {
+  name?: string,
+  // TODO: Isn't this always set?
+  pluginDir?: string,
+  dependencies?: string[],
+}
