@@ -6,5 +6,6 @@
   "include": [
     "lib/**/*",
     "test/**/*",
+    "test-fixtures/**/*"
   ]
 }

@@ -57,13 +57,6 @@ describe('Normalize Plugin Name', () => {
       });
     });
 
-    it('should throw on upwards directory traversing', () => {
-      assert.doesNotThrow(() => { normalizePluginName('./foo/../bar/'); });
-      assert.throws(() => { normalizePluginName('./foo/../../bar/'); }, {
-        message: 'Plugin name attempts directory traversal: "./foo/../../bar/"',
-      });
-    });
-
     it('should return simple plugin name unaltered', () => {
       const result = normalizePluginName('foo');
       assert.ok(result);
@@ -104,6 +97,25 @@ describe('Normalize Plugin Name', () => {
       assertPosixPath(
         normalizePluginName('./foo'),
         './foo'
+      );
+    });
+
+    it('should return local upper path without prefix but normalized', () => {
+      assertPosixPath(
+        normalizePluginName('../foo/../bar/', 'example-prefix'),
+        './../bar/'
+      );
+      assertPosixPath(
+        normalizePluginName('../foo', 'example-prefix'),
+        './../foo'
+      );
+      assertPosixPath(
+        normalizePluginName('../foo/../bar/'),
+        './../bar/'
+      );
+      assertPosixPath(
+        normalizePluginName('../foo'),
+        './../foo'
       );
     });
   });
