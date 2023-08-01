@@ -1,11 +1,9 @@
-# Node Module Template
+# Plugin Importer
 
-A GitHub template repo for node modules
+Recursively imports a plugin tree in order of dependencies
 
-<!--
-[![npm version](https://img.shields.io/npm/v/buffered-async-iterable.svg?style=flat)](https://www.npmjs.com/package/buffered-async-iterable)
-[![npm downloads](https://img.shields.io/npm/dm/buffered-async-iterable.svg?style=flat)](https://www.npmjs.com/package/buffered-async-iterable)
--->
+[![npm version](https://img.shields.io/npm/v/plugin-importer.svg?style=flat)](https://www.npmjs.com/package/plugin-importer)
+[![npm downloads](https://img.shields.io/npm/dm/plugin-importer.svg?style=flat)](https://www.npmjs.com/package/plugin-importer)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/voxpelli/eslint-config)
 [![Module type: ESM](https://img.shields.io/badge/module%20type-esm-brightgreen)](https://github.com/voxpelli/badges-cjs-esm)
 [![Types in JS](https://img.shields.io/badge/types_in_js-yes-brightgreen)](https://github.com/voxpelli/types-in-js)
@@ -16,16 +14,68 @@ A GitHub template repo for node modules
 ### Simple
 
 ```javascript
-import { something } from '@voxpelli/node-module-template';
+import { resolvePlainPlugins } from 'plugin-importer';
 
-// Use that something
+const loadedPlugins = await resolvePlainPlugins([
+  './test-dependency',
+  'module-dependency',
+], {
+  meta: import.meta, // Ensures local paths are resolved in relation to this file
+});
 ```
 
-## API
+### Powerful
 
-### `something(input, { configParam }) => Promise<output>`
+```javascript
+import { loadPlugins, resolvePluginsInOrder } from 'plugin-importer';
 
-Takes a value (`input`), does something configured by the config (`configParam`) and returns the processed value asyncly(`output`)
+/**
+ * @param {unknown} module
+ * @param {import('plugin-importer').ProcessPluginContext} context
+ * @returns {SupersetOfPluginDefinition}
+ */
+function processPlugin (module, { normalizedPluginName, pluginDir }) {
+  // Whatever other stuff you want to do to resolve the SupersetOfPluginDefinition
+}
+
+const pluginLoader = loadPlugins(processPlugin, {
+  meta: import.meta, // Ensures local paths are resolved in relation to this file
+});
+
+// loadedPlugins will be an ordered array of SupersetOfPluginDefinition,in order of who depends on whom
+const loadedPlugins = await resolvePluginsInOrder(
+  [
+    './test-dependency',
+    'module-dependency',
+  ],
+  pluginLoader
+);
+```
+
+## Exports
+
+### Core exports
+
+* `isPluginDefinition(value)` – returns `true` if `value` is a valid `PluginDefinition` (and correctly narrows the type when used with TypeScript)
+* `loadPlugins(processPlugin, [options])` – creates the plugin loader responsible for loading a valid plugin
+* `resolvePluginsInOrder` –
+
+### Plain plugins exports
+
+* `loadPlainPlugins`
+* `processPlainPlugin`
+* `resolvePlainPlugins`
+
+### Utils exports
+
+* `getExtensionlessBasename`
+* `importAbsolutePath`
+
+## Types
+
+* `LoadPluginsOptions`
+* `PluginDefinition`
+* `ProcessPluginContext`
 
 ## Similar modules
 
