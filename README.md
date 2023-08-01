@@ -57,31 +57,25 @@ const loadedPlugins = await resolvePluginsInOrder(
 ### Core exports
 
 * `isPluginDefinition(value)` – returns `true` if `value` is a valid `PluginDefinition` (and correctly narrows the type when used with TypeScript)
-* `loadPlugins(processPlugin, [options])` – creates the plugin loader responsible for loading a valid plugin
-* `resolvePluginsInOrder` –
+* `loadPlugins(processPlugin, [LoadPluginsOptions])` – creates the plugin loader responsible for loading a valid plugin
+* `resolvePluginsInOrder(plugins, pluginLoader, [allowOptionalDependencies])` – resolves and loads plugins and returns them with the plugin depended upon first and the plugins depending on them last
 
 ### Plain plugins exports
 
-* `loadPlainPlugins`
-* `processPlainPlugin`
-* `resolvePlainPlugins`
+* `loadPlainPlugins([LoadPluginsOptions])` – like `loadPlugins`, but geared to load pure `PluginDefinition` rather than supersets
+* `processPlainPlugin` – the `processPlugin` that's used in `loadPlainPlugins`, should never be needed to be called diretcly
+* `resolvePlainPlugins(dependencies, [LoadPluginsOptions])` – shortcut for calling `resolvePluginsInOrder` with `loadPlainPlugins`
 
 ### Utils exports
 
-* `getExtensionlessBasename`
-* `importAbsolutePath`
+* `getExtensionlessBasename(value)` – like [`path.basename(value)`](https://nodejs.org/api/path.html#pathbasenamepath-suffix) but removes file extensions
+* `importAbsolutePath(absolutePath)` – like [`import(absolutePath)`](https://nodejs.org/api/esm.html#import-expressions) but made to easily work with absolute paths on Windows
 
 ## Types
 
-* `LoadPluginsOptions`
-* `PluginDefinition`
-* `ProcessPluginContext`
-
-## Similar modules
-
-* [`example`](https://example.com/) – is similar in this way
-
-## See also
-
-* [Announcement blog post](#)
-* [Announcement tweet](#)
+* `LoadPluginsOptions` – the optional options for `loadPlugins`. Contains:
+  * `cwd` – the working directory to load relative plugin paths from
+  * `meta` – convenience option for setting `cwd` by giving an [`import.meta`](https://nodejs.org/api/esm.html#importmeta)
+  * `prefix` – a prefix that will be added to dependency names. Eg `example-prefix` would be added to `foo` to make `example-prefix-foo` and to `@voxpelli` to make `@voxpelli/example-prefix`, but eg. `example-prefix-foo` would not be prefixed as it already has the prefix and `@voxpelli/foo` would neither get prefixed. This is along the lines of what `eslint` does with [`eslint-config`](https://eslint.org/docs/latest/extend/shareable-configs#creating-a-shareable-config) prefixes
+* `PluginDefinition` – the basic definition of a plugin. All loaded plugins are expected to conform to this or a superset of this.
+* `ProcessPluginContext` – the context given to `processPlugin`
