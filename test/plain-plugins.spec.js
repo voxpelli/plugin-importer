@@ -65,5 +65,37 @@ describe('Plain Plugins', () => {
         assert.strictEqual(err.cause.message, 'item added into group ./circular/index.js created a dependencies error');
       }
     });
+
+    it('should support import.meta in place of cwd', async () => {
+      const result = await resolvePlainPlugins([
+        './test-dependency',
+      ], {
+        meta: {
+          url: (new URL('../test-fixtures/index.js', import.meta.url)).toString(),
+        },
+      });
+
+      assert.ok(result);
+      assert.strictEqual(result.length, 2);
+    });
+
+    it('should throw if both import.meta and cwd has been given', async () => {
+      try {
+        await resolvePlainPlugins([
+          './test-dependency',
+        ], {
+          cwd: join(import.meta.url, '../test-fixtures/'),
+          meta: {
+            url: (new URL('../test-fixtures/index.js', import.meta.url)).toString(),
+          },
+        });
+        assert.fail('Expected resolvePlainPlugins to fail');
+      } catch (err) {
+        assert(err instanceof Error);
+        assert.strictEqual(err.message, 'Can not provide both cwd and meta at once');
+      }
+    });
+
+    // TODO: Test prefix option
   });
 });
