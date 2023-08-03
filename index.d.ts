@@ -18,6 +18,7 @@ export {
 } from './lib/plain-plugins.js';
 
 export {
+  assertToBePluginDefinition,
   isPluginDefinition,
   resolvePluginsInOrder,
 } from './lib/resolve-plugins.js';

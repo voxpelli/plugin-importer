@@ -56,7 +56,8 @@ const loadedPlugins = await resolvePluginsInOrder(
 
 ### Core exports
 
-* `isPluginDefinition(value)` – returns `true` if `value` is a valid `PluginDefinition` (and correctly narrows the type when used with TypeScript)
+* `assertToBePluginDefinition(value)` – throws if `value` isn't a valid `PluginDefinition` (and correctly narrows the type when used with TypeScript)
+ * `isPluginDefinition(value)` – returns `true` if `value` is a valid `PluginDefinition` (and correctly narrows the type when used with TypeScript)
 * `loadPlugins(processPlugin, [LoadPluginsOptions])` – creates the plugin loader responsible for loading a valid plugin
 * `resolvePluginsInOrder(plugins, pluginLoader, [allowOptionalDependencies])` – resolves and loads plugins and returns them with the plugin depended upon first and the plugins depending on them last
 
