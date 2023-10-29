@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.18.7",
-    "@types/sinon": "^10.0.16",
+    "@types/sinon": "^10.0.20",
     "@voxpelli/eslint-config": "^19.0.0",
     "@voxpelli/node-test-pretty-reporter": "^1.1.1",
     "@voxpelli/tsconfig": "^9.0.0",
@@ -67,10 +67,10 @@
     "eslint-plugin-sort-destructure-keys": "^1.5.0",
     "eslint-plugin-unicorn": "^48.0.1",
     "husky": "^8.0.3",
-    "installed-check": "^8.0.0",
-    "knip": "^2.17.2",
-    "npm-run-all2": "^6.0.6",
-    "sinon": "^15.2.0",
+    "installed-check": "^8.0.1",
+    "knip": "^2.38.4",
+    "npm-run-all2": "^6.1.1",
+    "sinon": "^17.0.0",
     "type-coverage": "^2.27.0",
     "typescript": "~5.2.2"
   }
