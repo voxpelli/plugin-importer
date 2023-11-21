@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.18.7",
-    "@types/sinon": "^10.0.20",
+    "@types/sinon": "^17.0.2",
     "@voxpelli/eslint-config": "^19.0.0",
     "@voxpelli/node-test-pretty-reporter": "^1.1.1",
     "@voxpelli/tsconfig": "^9.0.0",
