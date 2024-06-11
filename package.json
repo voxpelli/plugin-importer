@@ -71,7 +71,7 @@
     "knip": "^2.38.4",
     "npm-run-all2": "^6.1.1",
     "sinon": "^17.0.0",
-    "type-coverage": "^2.27.0",
-    "typescript": "~5.2.2"
+    "type-coverage": "^2.29.0",
+    "typescript": "~5.4.5"
   }
 }
