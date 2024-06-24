@@ -1,10 +1,10 @@
 {
-  "$schema": "https://unpkg.com/knip@2/schema.json",
+  "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": [
     "index.js",
     "index.d.ts"
   ],
   "ignore": [
-    "test-fixtures/"
+    "test-fixtures/**/*"
   ]
 }
