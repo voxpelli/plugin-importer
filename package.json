@@ -63,7 +63,7 @@
     "npm-run-all2": "^6.2.2",
     "sinon": "^19.0.2",
     "type-coverage": "^2.29.1",
-    "typescript": "~5.5.2",
+    "typescript": "~5.6.2",
     "validate-conventional-commit": "^1.0.4"
   }
 }
