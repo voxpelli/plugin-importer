@@ -61,7 +61,7 @@
     "installed-check": "^9.3.0",
     "knip": "^5.37.2",
     "npm-run-all2": "^7.0.1",
-    "sinon": "^19.0.2",
+    "sinon": "^20.0.0",
     "type-coverage": "^2.29.7",
     "typescript": "~5.7.2",
     "validate-conventional-commit": "^1.0.4"
