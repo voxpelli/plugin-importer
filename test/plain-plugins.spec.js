@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import path from 'node:path';
 
 import { join } from 'desm';
 
@@ -25,7 +26,7 @@ describe('Plain Plugins', () => {
         },
         {
           dependencies: [
-            './test-dependency/test-dependency-2.js',
+            './test-dependency/test-dependency-2.js'.replaceAll('/', path.sep),
           ],
           foo: 'bar',
           name: 'test-dependency',
@@ -60,9 +61,15 @@ describe('Plain Plugins', () => {
         assert.fail('Expected resolvePlainPlugins to fail');
       } catch (err) {
         assert(err instanceof Error);
-        assert.strictEqual(err.message, 'Failed to add plugin "./circular/index.js"');
+        assert.strictEqual(
+          err.message,
+          'Failed to add plugin "./circular/index.js"'.replaceAll('/', path.sep)
+        );
         assert(err.cause instanceof Error);
-        assert.strictEqual(err.cause.message, 'item added into group ./circular/index.js created a dependencies error');
+        assert.strictEqual(
+          err.cause.message,
+          'item added into group ./circular/index.js created a dependencies error'.replaceAll('/', path.sep)
+        );
       }
     });
 
