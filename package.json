@@ -13,7 +13,7 @@
   "author": "Pelle Wessman <pelle@kodfabrik.se> (http://kodfabrik.se/)",
   "license": "MIT",
   "engines": {
-    "node": ">=18.6.0"
+    "node": "^20.15.0 || >=22.2.0"
   },
   "type": "module",
   "exports": "./index.js",
@@ -49,7 +49,7 @@
     "@hapi/topo": "^6.0.2"
   },
   "devDependencies": {
-    "@types/node": "^18.19.86",
+    "@types/node": "^20.19.9",
     "@types/sinon": "^17.0.4",
     "@voxpelli/eslint-config": "^23.0.0",
     "@voxpelli/node-test-pretty-reporter": "^1.1.2",
