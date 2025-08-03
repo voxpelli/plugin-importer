@@ -1,6 +1,6 @@
 {
   "name": "plugin-importer",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Recursively imports a plugin tree in order of dependencies",
   "homepage": "http://github.com/voxpelli/plugin-importer",
   "repository": {
