@@ -50,10 +50,17 @@ describe('Plain Plugins', () => {
          */
         (err) => {
           assert(err instanceof Error);
-          assert.strictEqual(err.message, 'Failed to load plugin "./../index.js"');
+          assert.strictEqual(
+            err.message,
+            'Failed to load plugin "./../index.js"'.replaceAll('/', path.sep)
+          );
 
           assert(err.cause instanceof Error);
-          assert.match(err.cause.message, /^Path traversal detected for "\.\/\.\.\/index\.js", trying to load outside of "/);
+          // eslint-disable-next-line security/detect-non-literal-regexp
+          assert.match(err.cause.message, new RegExp(
+            '^Path traversal detected for "\\./\\.\\./index\\.js", trying to load outside of "'
+              .replaceAll('/', path.sep === '\\' ? '\\\\' : '/')
+          ));
 
           return true;
         },
