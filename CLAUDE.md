@@ -49,7 +49,8 @@ npm run build         # Generate TypeScript declarations from JSDoc
 
 ## Design Decisions
 
-- **No caching in `loadPlugins`**: `resolvePluginsInOrder` already deduplicates via a `loadedPlugins` Set that prevents the loader from being called twice with the same plugin name. Adding a cache inside `loadPlugins` is redundant — benchmark before adding optimizations, and skip them entirely when the code path is provably unreachable.
+- **Benchmark before optimizing**: Don't add performance optimizations (caching, memoization, fast paths) without first proving there's a measurable problem. First check whether the code path is even reachable — if it's provably unreachable, skip the optimization entirely. If it is reachable, benchmark using [mitata](https://npm.im/mitata) (see [async-htm-to-string](https://github.com/voxpelli/async-htm-to-string/blob/main/benchmark.js) for the pattern): create a `benchmark.js` at the repo root, run with `node --expose-gc benchmark.js`, use `group()`/`bench()`/`do_not_optimize()` to compare before/after, and only land the change if the improvement is distinct.
+- **No caching in `loadPlugins`**: `resolvePluginsInOrder` already deduplicates via a `loadedPlugins` Set that prevents the loader from being called twice with the same plugin name. A cache inside `loadPlugins` would never get a hit during normal usage — the deduplication happens one layer up.
 
 ## CI/CD
 
