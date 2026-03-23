@@ -6,9 +6,10 @@ import {
   loadPlugins,
   resolvePluginsInOrder,
   resolvePlainPlugins,
+  loadPluginsWithHooks,
 } from 'plugin-importer';
 
-import type { PluginDefinition, ProcessPluginContext } from 'plugin-importer';
+import type { PluginDefinition, ProcessPluginContext, LifecycleHooks } from 'plugin-importer';
 
 describe('loadPlugins', () => {
   test('infers generic from processPlugin return type', () => {
@@ -46,6 +47,41 @@ describe('resolvePluginsInOrder', () => {
 describe('resolvePlainPlugins', () => {
   test('returns Promise<Array<PluginDefinition>>', () => {
     expect(resolvePlainPlugins(['foo'])).type.toBe<Promise<PluginDefinition[]>>();
+  });
+});
+
+describe('loadPluginsWithHooks', () => {
+  test('returns a loader function', () => {
+    const loader = loadPluginsWithHooks(
+      (_plugin: unknown, _context: ProcessPluginContext): PluginDefinition => ({ name: 'test' }),
+      {}
+    );
+
+    expect(loader).type.toBe<(pluginName: string) => Promise<PluginDefinition>>();
+  });
+
+  test('accepts lifecycle hooks', () => {
+    const hooks: LifecycleHooks = {
+      beforeLoad (_pluginName: string) {},
+      afterLoad (_plugin: PluginDefinition, _pluginName: string) {},
+      onError (_error: Error, _pluginName: string) {},
+    };
+
+    expect(hooks).type.toBe<LifecycleHooks>();
+  });
+});
+
+describe('ProcessPluginContext', () => {
+  test('has originalName and resolvedPath properties', () => {
+    const context: ProcessPluginContext = {
+      pluginDir: '/test',
+      normalizedPluginName: 'test',
+      originalName: 'test',
+      resolvedPath: '/test/index.js',
+    };
+
+    expect(context.originalName).type.toBe<string>();
+    expect(context.resolvedPath).type.toBe<string>();
   });
 });
 

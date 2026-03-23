@@ -1,4 +1,8 @@
 export {
+  loadPluginsWithHooks,
+} from './lib/hooks.js';
+
+export {
   loadPlugins,
 } from './lib/load-plugins.js';
 

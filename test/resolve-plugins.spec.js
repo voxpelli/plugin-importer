@@ -56,7 +56,7 @@ describe('Resolve Plugins', () => {
         loadPluginStub.onThirdCall().returns(undefined);
 
         return assert.rejects(resolvePluginsInOrder(['foo', 'bar', 'abc'], loadPluginStub), {
-          message: /Plugins missing: "foo", "abc"/,
+          message: /Required plugins not found: "foo", "abc"/,
         });
       });
 
@@ -67,7 +67,7 @@ describe('Resolve Plugins', () => {
         loadPluginStub.onSecondCall().returns(undefined);
 
         return assert.rejects(resolvePluginsInOrder(['foo', 'bar'], loadPluginStub), {
-          message: /Plugin missing: "bar"/,
+          message: /Required plugin not found: "bar"/,
         });
       });
 
@@ -139,7 +139,7 @@ describe('Resolve Plugins', () => {
         });
 
         return assert.rejects(resolvePluginsInOrder(['foo'], loadPluginStub), {
-          message: /Failed to add plugin "bar"/,
+          message: /Failed to add plugin "bar" to dependency graph/,
         });
       });
 
@@ -154,6 +154,69 @@ describe('Resolve Plugins', () => {
         assert.deepStrictEqual(result, [false, 'abc123']);
       });
 
+      it('should treat peer dependency as required when in top-level list', () => {
+        const loadPluginStub = sinon.stub();
+
+        loadPluginStub.withArgs('foo').returns(undefined);
+
+        return assert.rejects(resolvePluginsInOrder(['foo~'], loadPluginStub), {
+          message: /Required plugin not found: "foo"/,
+        });
+      });
+
+      it('should treat peer dependency as optional when only a transitive dependency', async () => {
+        const loadPluginStub = sinon.stub();
+
+        loadPluginStub.withArgs('bar').returns({
+          name: 'bar',
+          dependencies: ['baz~'],
+        });
+        loadPluginStub.withArgs('baz').returns(undefined);
+
+        const result = await resolvePluginsInOrder(['bar'], loadPluginStub);
+        assert.ok(result);
+        assert.deepStrictEqual(result, [
+          {
+            name: 'bar',
+            dependencies: ['baz~'],
+          },
+          false,
+        ]);
+      });
+
+      it('should load peer dependency normally when available', async () => {
+        const loadPluginStub = sinon.stub();
+
+        loadPluginStub.withArgs('bar').returns({
+          name: 'bar',
+          dependencies: ['baz~'],
+        });
+        loadPluginStub.withArgs('baz').returns({
+          name: 'baz',
+        });
+
+        const result = await resolvePluginsInOrder(['bar'], loadPluginStub);
+        assert.ok(result);
+        assert.deepStrictEqual(result, [
+          { name: 'bar', dependencies: ['baz~'] },
+          { name: 'baz' },
+        ]);
+      });
+
+      it('should require peer dependency when explicitly listed at top level', () => {
+        const loadPluginStub = sinon.stub();
+
+        loadPluginStub.withArgs('foo').returns({
+          name: 'foo',
+          dependencies: ['bar~'],
+        });
+        loadPluginStub.withArgs('bar').returns(undefined);
+
+        return assert.rejects(resolvePluginsInOrder(['foo', 'bar~'], loadPluginStub), {
+          message: /Required plugin not found: "bar"/,
+        });
+      });
+
       it('should be possible to prohibit optional dependencies', () => {
         const loadPluginStub = sinon.stub();
 
@@ -161,7 +224,7 @@ describe('Resolve Plugins', () => {
         loadPluginStub.withArgs('bar').returns('abc123');
 
         return assert.rejects(resolvePluginsInOrder(['foo?', 'bar'], loadPluginStub), {
-          message: /Plugin missing: "foo\?"/,
+          message: /Required plugin not found: "foo\?"/,
         });
       });
     });

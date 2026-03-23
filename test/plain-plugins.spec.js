@@ -58,7 +58,7 @@ describe('Plain Plugins', () => {
           assert(err.cause instanceof Error);
           // eslint-disable-next-line security/detect-non-literal-regexp
           assert.match(err.cause.message, new RegExp(
-            '^Path traversal detected for "\\./\\.\\./index\\.js", trying to load outside of "'
+            '^Path traversal detected for "\\./\\.\\./index\\.js": resolves to "'
               .replaceAll('/', path.sep === '\\' ? '\\\\' : '/')
           ));
 
@@ -85,7 +85,7 @@ describe('Plain Plugins', () => {
           assert(err instanceof Error);
           assert.strictEqual(
             err.message,
-            'Failed to add plugin "./circular/index.js"'.replaceAll('/', path.sep)
+            'Failed to add plugin "./circular/index.js" to dependency graph'.replaceAll('/', path.sep)
           );
 
           assert(err.cause instanceof Error);
