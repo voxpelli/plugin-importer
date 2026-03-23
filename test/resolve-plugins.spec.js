@@ -217,6 +217,15 @@ describe('Resolve Plugins', () => {
         });
       });
 
+      it('should reject combined dependency modifiers', () => {
+        const loadPluginStub = sinon.stub();
+
+        return assert.rejects(resolvePluginsInOrder(['foo?~'], loadPluginStub), {
+          name: 'TypeError',
+          message: /cannot combine dependency modifiers/,
+        });
+      });
+
       it('should be possible to prohibit optional dependencies', () => {
         const loadPluginStub = sinon.stub();
 

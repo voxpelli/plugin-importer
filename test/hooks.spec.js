@@ -62,6 +62,23 @@ describe('Hooks', () => {
       assert.strictEqual(result.name, 'fallback-nonexistent-plugin');
     });
 
+    it('should reject invalid recovery plugin from onError', async () => {
+      const loader = loadPluginsWithHooks(processPlainPlugin, {
+        onError () {
+          return /** @type {import('../lib/advanced-types.d.ts').PluginDefinition} */ (
+            /** @type {unknown} */ ({ dependencies: 'not-an-array' })
+          );
+        },
+      }, {
+        cwd: join(import.meta.url, '../test-fixtures/'),
+      });
+
+      await assert.rejects(
+        () => loader('nonexistent-plugin'),
+        { message: /Expected "dependencies" property to be an array of strings/ }
+      );
+    });
+
     it('should re-throw if onError returns undefined', async () => {
       const loader = loadPluginsWithHooks(processPlainPlugin, {
         onError () {},
