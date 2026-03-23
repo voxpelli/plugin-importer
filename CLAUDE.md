@@ -47,6 +47,10 @@ npm run build         # Generate TypeScript declarations from JSDoc
 - **Commits**: Conventional Commits enforced by husky commit-msg hook
 - **No package-lock.json** — this is a library (`.npmrc: package-lock=false`)
 
+## Design Decisions
+
+- **No caching in `loadPlugins`**: `resolvePluginsInOrder` already deduplicates via a `loadedPlugins` Set that prevents the loader from being called twice with the same plugin name. Adding a cache inside `loadPlugins` is redundant — benchmark before adding optimizations, and skip them entirely when the code path is provably unreachable.
+
 ## CI/CD
 
 GitHub Actions workflows: `nodejs.yml` (Node 20/22/24, ubuntu + windows), `lint.yml`, `compliance.yml`, `ts-internal.yml`. Releases via `release-please`.
