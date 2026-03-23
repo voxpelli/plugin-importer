@@ -122,7 +122,6 @@ const loadedPlugins = await resolvePluginsInOrder(['./my-plugin'], pluginLoader)
   * `cwd` – the working directory to load relative plugin paths from
   * `meta` – convenience option for setting `cwd` by giving an [`import.meta`](https://nodejs.org/api/esm.html#importmeta)
   * `prefix` – a prefix that will be added to dependency names. Eg `example-prefix` would be added to `foo` to make `example-prefix-foo` and to `@voxpelli` to make `@voxpelli/example-prefix`, but eg. `example-prefix-foo` would not be prefixed as it already has the prefix and `@voxpelli/foo` would neither get prefixed. This is along the lines of what `eslint` does with [`eslint-config`](https://eslint.org/docs/latest/extend/shareable-configs#creating-a-shareable-config) prefixes
-  * `cache` – when `true`, caches loaded plugins by normalized name so the same plugin is not loaded twice within a single loader instance
 * `LifecycleHooks` – hooks for `loadPluginsWithHooks`. Contains:
   * `beforeLoad(pluginName)` – called before a plugin is loaded
   * `afterLoad(plugin, pluginName)` – called after a plugin is successfully loaded
