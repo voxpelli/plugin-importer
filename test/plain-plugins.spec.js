@@ -139,6 +139,22 @@ describe('Plain Plugins', () => {
       );
     });
 
-    // TODO: Test prefix option
+    it('should resolve plugins with prefix option', async () => {
+      const result = await resolvePlainPlugins([
+        'myplugin',
+      ], {
+        cwd: join(import.meta.url, '../test-fixtures/prefixed/'),
+        prefix: 'example-prefix',
+      });
+
+      assert.ok(result);
+      assert.deepStrictEqual(result, [
+        {
+          foo: 'prefixed',
+          name: 'example-prefix-myplugin',
+          pluginDir: join(import.meta.url, '../test-fixtures/prefixed/node_modules/example-prefix-myplugin'),
+        },
+      ]);
+    });
   });
 });

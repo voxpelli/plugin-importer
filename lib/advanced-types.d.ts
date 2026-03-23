@@ -1,6 +1,6 @@
 export interface PluginDefinition {
   name?: string,
-  // TODO: Isn't this always set?
+  /** Always set by the built-in plugin loaders, but optional in the interface to allow custom processPlugin implementations */
   pluginDir?: string,
   dependencies?: string[],
 }
