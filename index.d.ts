@@ -3,6 +3,14 @@ export type {
 } from './lib/advanced-types.d.ts';
 
 export type {
+  LifecycleHooks,
+} from './lib/hooks.js';
+
+export {
+  loadPluginsWithHooks,
+} from './lib/hooks.js';
+
+export type {
   LoadPluginsOptions,
   ProcessPluginContext,
 } from './lib/load-plugins.js';

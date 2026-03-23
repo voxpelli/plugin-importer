@@ -1,4 +1,4 @@
-name: Type Checks, Internal Types
+name: TSTyche
 
 on:
   push:
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   type-check:
-    uses: voxpelli/ghatemplates/.github/workflows/type-check.yml@main
+    uses: voxpelli/ghatemplates/.github/workflows/reusable-tstyche.yml@main
     with:
-      ts-versions: ${{ github.event.schedule && 'next' || '5.6,next' }}
+      ts-versions: ${{ github.event.schedule && 'next' || '>=5.8,next' }}
       ts-libs: 'es2022;esnext'
